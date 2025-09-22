@@ -44,7 +44,7 @@
         };
         unpyatched = {
           enable = true;
-          backend = "nix-ld"; # or "nix-ld"
+          backend = "fhs"; # or "nix-ld"
         };
         devshells.default = {
           packages = with pkgs; [
