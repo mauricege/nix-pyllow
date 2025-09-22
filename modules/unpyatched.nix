@@ -120,12 +120,13 @@ localFlake: {
           ];
 
           allLibraries = manylinuxLibs ++ additionalDefaultLibs;
+          packagesWithoutTools = builtins.filter (pkg: !(lib.elem (pnameOf pkg) (map pnameOf matchedTools))) (config.devshells.default.packages or []);
 
           wrapToolFHS = pkg: let
             pname = pnameOf pkg;
             fhsTool = pkgs.buildFHSEnvBubblewrap {
               name = pname;
-              targetPkgs = pkgs: config.devshells.default.packages ++ allLibraries;
+              targetPkgs = pkgs: matchedTools ++ packagesWithoutTools ++ allLibraries;
               runScript = pname;
               profile = envExportString;
             };
@@ -190,7 +191,7 @@ localFlake: {
           fhsEnv = pkgs.buildFHSEnvBubblewrap {
             name = "fhs";
             targetPkgs = pkgs:
-              config.devshells.default.packages ++ allLibraries;
+              matchedTools ++ packagesWithoutTools ++ allLibraries;
             profile = "${envExportString}";
           };
 

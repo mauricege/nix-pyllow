@@ -32,6 +32,14 @@
         pkgs,
         ...
       }: {
+        devshells.default = {
+          packages = with pkgs; [
+            uv
+            pixi
+          ];
+          env = [
+          ];
+        };
         unpyatched = {
           enable = true;
           backend = "fhs"; # or "nix-ld"
