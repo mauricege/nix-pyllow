@@ -42,7 +42,6 @@
         };
         unpyatched = {
           enable = true;
-          backend = "fhs"; # or "nix-ld"
         };
       };
       flake = {

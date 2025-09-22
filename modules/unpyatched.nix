@@ -23,7 +23,10 @@ localFlake: {
 
         backend = lib.mkOption {
           type = lib.types.enum ["fhs" "nix-ld"];
-          default = "fhs";
+          default =
+            if builtins.pathExists "/run/current-system/sw/share/nix-ld/lib/ld.so"
+            then "nix-ld"
+            else "fhs";
           description = ''
             Which backend to use. Default is "nix-ld" if available on the system,
             otherwise "fhs".
