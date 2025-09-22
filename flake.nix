@@ -41,7 +41,7 @@
         inherit flakeModules;
         templates = rec {
           flake-parts = {
-            path = ./templates/flake-parts/flake.nix;
+            path = ./templates/flake-parts;
             description = "Example flake suppporting normal numtide devshell workflows with unpyatched enabled";
           };
           default = flake-parts;
