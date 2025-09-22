@@ -17,7 +17,7 @@ Or even worse, this:
 libz.so.1: cannot open shared object file: No such file or directory
 ```
 
-This is a well known issue that comes down to pip pulling in binaries which are dynamically linked to pre-compiled libraries that cannot be resolved on NixOS. Different solutions to this issue have been proposed, such as patching the binaries with patchelf (there's a [tool] for that), adding the missing libraries to LD_LIBRARY_PATH (in a development shell), or using specialized tooling that generates nix-derivations from .toml and .lock files of python package managers ([uv2nix](https://github.com/pyproject-nix/uv2nix) or [poetry2nix](https://github.com/nix-community/poetry2nix)).
+This is a well known issue that comes down to pip pulling in binaries which are dynamically linked to pre-compiled libraries that cannot be resolved on NixOS. Different solutions to this issue have been proposed, such as patching the binaries with patchelf (there's a [tool](https://github.com/GuillaumeDesforges/fix-python) for that), adding the missing libraries to LD_LIBRARY_PATH (in a development shell), or using specialized tooling that generates nix-derivations from .toml and .lock files of python package managers ([uv2nix](https://github.com/pyproject-nix/uv2nix) or [poetry2nix](https://github.com/nix-community/poetry2nix)).
 
 ## Unpatched binaries - If you can't beat 'em, embrace 'em
 
