@@ -92,7 +92,10 @@ localFlake: {
 
           envExportString = lib.concatStringsSep "\n" (map envToBash (builtins.filter (env: !(lib.elem env.name ["PATH" "NIXPKGS_PATH"])) config.devshells.default.env));
 
-          pnameOf = pkg: pkg.pname;
+          pnameOf = pkg:
+            if pkg ? pname
+            then pkg.pname
+            else pkg.name;
 
           cacheWrappers = import ./cacheWrappers.nix {inherit pkgs lib;};
 
