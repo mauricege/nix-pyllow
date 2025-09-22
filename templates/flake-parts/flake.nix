@@ -18,8 +18,8 @@
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
-        inputs.devshell.flakeModule
-        inputs.unpyatched.flakeModule
+        inputs.devshell.flakeModules.default
+        inputs.unpyatched.flakeModules.default
       ];
 
       systems = [
