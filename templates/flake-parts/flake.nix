@@ -47,9 +47,9 @@
           backend = "nix-ld"; # or "nix-ld"
         };
         devshells.default = {
-          imports = [(devshell.lib.importTOML ./devshell.toml)];
-
           packages = with pkgs; [
+            uv
+            pixi
           ];
           env = [
           ];

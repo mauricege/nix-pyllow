@@ -38,7 +38,7 @@ or
 ## ✨ Features
 
 - Works with **uv** and **pixi** out of the box
-- Integrates with [devshell](https://github.com/numtide/devshell) (with `devshell.toml` support)
+- Integrates with [devshell](https://github.com/numtide/devshell)
 - Lets you transparently wrap additional tools via `toolsToWrap`
 - Provides good library coverage through configurable **manylinux** compatibility layer (`1`, `2010`, or `2014`)
 - Provides an FHS fallback shell via `fhs`
