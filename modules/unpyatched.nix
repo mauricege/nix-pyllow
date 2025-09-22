@@ -56,6 +56,7 @@ localFlake: {
 
       config = lib.mkIf config.unpyatched.enable (
         let
+          # upstream devshell's function https://github.com/numtide/devshell/blob/7c9e793ebe66bcba8292989a68c0419b737a22a0/modules/env.nix#L61C3-L96C72
           envToBash = with lib;
             {
               name,
