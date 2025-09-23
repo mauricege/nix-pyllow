@@ -39,10 +39,10 @@
           ];
           env = [
           ];
-        };
-        pyllow = {
-          enable = true;
-          backend = "nix-ld";
+          pyllow = {
+            enable = true;
+            backend = "nix-ld";
+          };
         };
       };
       flake = {

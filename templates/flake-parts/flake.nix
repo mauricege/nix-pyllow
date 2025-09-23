@@ -42,10 +42,7 @@
             allowUnfree = true;
           };
         };
-        pyllow = {
-          enable = true;
-          backend = "fhs"; # or "nix-ld"
-        };
+
         devshells.default = {
           packages = with pkgs; [
             uv
@@ -53,6 +50,10 @@
           ];
           env = [
           ];
+          pyllow = {
+            enable = true;
+            backend = "fhs"; # or "nix-ld"
+          };
         };
       };
     };
