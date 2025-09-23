@@ -1,4 +1,4 @@
-# 🐍 unpyatched
+# 🐍 nix-pyllow - Making Python on NixOS Comfortable
 
 ## Python + NixOS = Pain
 
@@ -23,7 +23,7 @@ This is a well known issue that comes down to pip pulling in binaries which are 
 
 Many scarred NixOS believers have at least considered to (partly) renounce the church's teachings and resort to `steam-run ./my-unpatched-binary` – or finally enable [nix-ld](https://github.com/nix-community/nix-ld), sacrificing purity for their own mental wellbeing.
 
-**unpyatched** is a [flake-parts](https://github.com/hercules-ci/flake-parts) module extending [devshell](https://github.com/numtide/devshell) that fully **embraces unpatched binaries** to make Python tooling **just work** on NixOS. It leaves installing the whole Python tool chain to capable package managers ([uv](https://github.com/astral-sh/uv) or [pixi](https://prefix.dev/pixi)). Runtime dependencies are provided either through `nix-ld` or by wrapping the package managers in `buildFHSEnv`. This makes the package managers fully usable from a regular devShell – with support for [direnv](https://direnv.net/). As both pixi and uv encourage a `[pixi|uv] run [executable]` workflow, this also makes your project's python code run seamlessly.
+**nix-pyllow** is a [flake-parts](https://github.com/hercules-ci/flake-parts) module extending [devshell](https://github.com/numtide/devshell) that fully **embraces unpatched binaries** to make Python tooling **just work** on NixOS. It leaves installing the whole Python tool chain to capable package managers ([uv](https://github.com/astral-sh/uv) or [pixi](https://prefix.dev/pixi)). Runtime dependencies are provided either through `nix-ld` or by wrapping the package managers in `buildFHSEnv`. This makes the package managers fully usable from a regular devShell – with support for [direnv](https://direnv.net/). As both pixi and uv encourage a `[pixi|uv] run [executable]` workflow, this also makes your project's python code run seamlessly.
 
 It works by inspecting your devshell's packages attribute and either:
 
@@ -51,12 +51,12 @@ or
 ### Get the default template
 
 ```shell
-nix flake init -t github:mauricege/unpyatched
+nix flake init -t github:mauricege/nix-pyllow
 ```
 
 ### Maybe switch the backend
 
-The `unpyatched` module supports two backends for providing runtime dependencies to Python tools:
+The `nix-pyllow` module supports two backends for providing runtime dependencies to Python tools:
 
 - **"fhs"**: Wraps uv and pixi in an FHS-compatible environment (via `buildFHSEnvBubblewrap`)
 - **"nix-ld"**: Uses `nix-ld` to provide dynamic libraries
@@ -65,7 +65,7 @@ You can change the backend by editing your `flake.nix` file:
 
 ```nix
 // filepath: ./flake.nix
-unpyatched = {
+nix-pyllow = {
   enable = true;
   backend = "nix-ld"; # or "fhs"
 };
@@ -78,7 +78,7 @@ Either `nix develop` or `direnv allow`.
 You’ll see a MOTD like:
 
 ```shell
-🚀 Welcome to unpyatched
+🚀 Welcome to nix-pyllow
 
 🐍 Supported Python tooling (via nix-ld)
   uv         - Python package installer ✔ (available)

@@ -12,13 +12,13 @@ localFlake: {
       system,
       ...
     }: {
-      options.unpyatched = {
-        enable = lib.mkEnableOption "Make python **just work** with unpyatched. Either through transparent FHS wrapping or nix-ld.";
+      options.pyllow = {
+        enable = lib.mkEnableOption "Make python **just work** with pyllow. Either through transparent FHS wrapping or nix-ld.";
 
         name = lib.mkOption {
           type = lib.types.str;
-          default = "unpyatched";
-          description = "Name of the unpyatched environment.";
+          default = "pyllow";
+          description = "Name of the pyllow environment.";
         };
 
         backend = lib.mkOption {
@@ -57,7 +57,7 @@ localFlake: {
         };
       };
 
-      config = lib.mkIf config.unpyatched.enable (
+      config = lib.mkIf config.pyllow.enable (
         let
           # upstream devshell's function https://github.com/numtide/devshell/blob/7c9e793ebe66bcba8292989a68c0419b737a22a0/modules/env.nix#L61C3-L96C72
           envToBash = with lib;
@@ -107,11 +107,11 @@ localFlake: {
               if cacheWrappers ? ${pkg.pname}
               then cacheWrappers.${pkg.pname}
               else pkg)
-            (builtins.filter (pkg: lib.elem (pnameOf pkg) (map pnameOf config.unpyatched.toolsToWrap))
+            (builtins.filter (pkg: lib.elem (pnameOf pkg) (map pnameOf config.pyllow.toolsToWrap))
               (config.devshells.default.packages or []));
 
           manylinuxLibs =
-            if config.unpyatched.manylinux == null
+            if config.pyllow.manylinux == null
             then []
             else
               {
@@ -119,7 +119,7 @@ localFlake: {
                 "2010" = pkgs.pythonManylinuxPackages.manylinux2010;
                 "2014" = pkgs.pythonManylinuxPackages.manylinux2014;
               }.${
-                config.unpyatched.manylinux
+                config.pyllow.manylinux
               };
           additionalDefaultLibs = with pkgs; [
             libxcrypt
@@ -163,7 +163,7 @@ localFlake: {
           wrapped = lib.listToAttrs (map (pkg: {
               name = pnameOf pkg;
               value =
-                if config.unpyatched.backend == "fhs"
+                if config.pyllow.backend == "fhs"
                 then wrapToolFHS pkg
                 else wrapToolNixLd pkg;
             })
@@ -181,7 +181,7 @@ localFlake: {
                   else acc
               )
               0
-              config.unpyatched.toolsToWrap;
+              config.pyllow.toolsToWrap;
           in
             lib.concatMapStringsSep "\n" (
               pkg: ''
@@ -192,7 +192,7 @@ localFlake: {
                 fi
               ''
             )
-            config.unpyatched.toolsToWrap;
+            config.pyllow.toolsToWrap;
 
           fhsEnv = pkgs.buildFHSEnvBubblewrap {
             name = "fhs";
@@ -234,13 +234,13 @@ localFlake: {
             scripts;
 
           devshells.default = {
-            name = "unpyatched";
+            name = "pyllow";
 
             motd = ''
-              {202}🚀 Welcome to ${config.unpyatched.name}{reset}
+              {202}🚀 Welcome to ${config.pyllow.name}{reset}
               $(type -p menu &>/dev/null && menu)
 
-              {226}🐍 Supported Python tooling (via ${config.unpyatched.backend}){reset}
+              {226}🐍 Supported Python tooling (via ${config.pyllow.backend}){reset}
 
               $(${toolCheckString})
 
@@ -256,7 +256,7 @@ localFlake: {
                 }
               ]
               ++ (
-                if config.unpyatched.backend == "nix-ld"
+                if config.pyllow.backend == "nix-ld"
                 then [
                   {
                     name = "NIX_LD";

@@ -1,11 +1,11 @@
 {
-  description = "Example flake with unpyatched module";
+  description = "Example flake with nix-pyllow module";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     devshell.url = "github:numtide/devshell";
-    unpyatched.url = "github:mauricege/unpyatched";
+    pyllow.url = "github:mauricege/nix-pylow";
   };
 
   outputs = inputs @ {
@@ -13,13 +13,13 @@
     nixpkgs,
     flake-parts,
     devshell,
-    unpyatched,
+    pyllow,
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
         inputs.devshell.flakeModule
-        inputs.unpyatched.flakeModules.default
+        inputs.pyllow.flakeModules.default
       ];
 
       systems = [
@@ -42,7 +42,7 @@
             allowUnfree = true;
           };
         };
-        unpyatched = {
+        pyllow = {
           enable = true;
           backend = "fhs"; # or "nix-ld"
         };

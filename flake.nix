@@ -1,5 +1,5 @@
 {
-  description = "unpyatched – painless Python tooling on Nix (FHS / nix-ld devshell integration)";
+  description = "nix-pyllow – painless Python tooling on Nix (FHS / nix-ld devshell integration)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -19,7 +19,7 @@
       ...
     }: let
       inherit (flake-parts-lib) importApply;
-      flakeModules.default = importApply ./modules/unpyatched.nix {inherit withSystem;};
+      flakeModules.default = importApply ./modules/pyllow.nix {inherit withSystem;};
     in {
       imports = [
         inputs.devshell.flakeModule
@@ -40,7 +40,7 @@
           env = [
           ];
         };
-        unpyatched = {
+        pyllow = {
           enable = true;
           backend = "nix-ld";
         };
