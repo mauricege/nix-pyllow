@@ -42,7 +42,6 @@ or
 - Lets you transparently wrap additional tools via `toolsToWrap`
 - Provides good library coverage through configurable **manylinux** compatibility layer (`1`, `2010`, or `2014`)
 - Provides an FHS fallback shell via `fhs`
-- Automatically generates `nix run` apps for `uv` project scripts (experimental!)
 
 ---
 
