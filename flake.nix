@@ -19,7 +19,7 @@
       ...
     }: let
       inherit (flake-parts-lib) importApply;
-      flakeModules.default = importApply ./modules/pyllow.nix {inherit withSystem;};
+      flakeModules.default = importApply ./modules/pyllow-shell.nix {inherit withSystem;};
     in {
       imports = [
         inputs.devshell.flakeModule
@@ -32,16 +32,13 @@
         pkgs,
         ...
       }: {
-        devshells.default = {
-          packages = with pkgs; [
-            uv
-            pixi
-          ];
-          env = [
-          ];
-          pyllow = {
-            enable = true;
-            backend = "nix-ld";
+        pyllow = {
+          backend = "nix-ld";
+          shells.default = {
+            packages = with pkgs; [
+              uv
+            ];
+            env = {TEST = "TEST";};
           };
         };
       };

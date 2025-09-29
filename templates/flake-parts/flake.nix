@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     devshell.url = "github:numtide/devshell";
-    pyllow.url = "github:mauricege/nix-pylow";
+    pyllow.url = "github:mauricege/nix-pyllow";
   };
 
   outputs = inputs @ {
@@ -43,16 +43,13 @@
           };
         };
 
-        devshells.default = {
-          packages = with pkgs; [
-            uv
-            pixi
-          ];
-          env = [
-          ];
-          pyllow = {
-            enable = true;
-            backend = "fhs"; # or "nix-ld"
+        pyllow = {
+          backend = "nix-ld"; # or "nix-ld"
+          shells.default = {
+            packages = with pkgs; [
+              uv
+              pixi
+            ];
           };
         };
       };

@@ -23,9 +23,9 @@ This is a well known issue that comes down to pip pulling in binaries which are 
 
 Many scarred NixOS believers have at least considered to (partly) renounce the church's teachings and resort to `steam-run ./my-unpatched-binary` – or finally enable [nix-ld](https://github.com/nix-community/nix-ld), sacrificing purity for their own mental wellbeing.
 
-**nix-pyllow** is a [flake-parts](https://github.com/hercules-ci/flake-parts) module extending [devshell](https://github.com/numtide/devshell) that fully **embraces unpatched binaries** to make Python tooling **just work** on NixOS. It leaves installing the whole Python tool chain to capable package managers ([uv](https://github.com/astral-sh/uv) or [pixi](https://prefix.dev/pixi)). Runtime dependencies are provided either through `nix-ld` or by wrapping the package managers in `buildFHSEnv`. This makes the package managers fully usable from a regular devShell – with support for [direnv](https://direnv.net/). As both pixi and uv encourage a `[pixi|uv] run [executable]` workflow, this also makes your project's python code run seamlessly.
+**nix-pyllow** is a [flake-parts](https://github.com/hercules-ci/flake-parts) module that fully **embraces unpatched binaries** to make Python tooling **just work** on NixOS. It leaves installing the whole Python tool chain to capable package managers ([uv](https://github.com/astral-sh/uv) or [pixi](https://prefix.dev/pixi)). Runtime dependencies are provided either through `nix-ld` or by wrapping the package managers in `buildFHSEnv`. This makes the package managers fully usable from a regular devShell – with support for [direnv](https://direnv.net/). As both pixi and uv encourage a `[pixi|uv] run [executable]` workflow, this also makes your project's python code run seamlessly.
 
-It works by inspecting your devshell's packages attribute and either:
+It provides a `pyllow.shells.<name>` submodule which generates devShells with working uv and/or pixi by either:
 
 1. Wrapping uv and pixi in `buildFHSEnvBubblewrap` with your packages in `targetPkgs` and prepending those wrappers to your PATH
 
@@ -33,17 +33,7 @@ or
 
 2. Setting NIX_LD_LIBRARY path to include all library directories of your packages list
 
----
-
-## ✨ Features
-
-- Works with **uv** and **pixi** out of the box
-- Integrates with [devshell](https://github.com/numtide/devshell)
-- Lets you transparently wrap additional tools via `toolsToWrap`
-- Provides good library coverage through configurable **manylinux** compatibility layer (`1`, `2010`, or `2014`)
-- Provides an FHS fallback shell via `fhs`
-
----
+The `shells` submodule supports the options `package`, `env`, `name` and `enterShell`, similar to [devenv](https://devenv.sh).
 
 ## 🚀 Getting Started
 
@@ -64,8 +54,7 @@ You can change the backend by editing your `flake.nix` file:
 
 ```nix
 // filepath: ./flake.nix
-nix-pyllow = {
-  enable = true;
+pyllow = {
   backend = "nix-ld"; # or "fhs"
 };
 ```
@@ -74,27 +63,13 @@ nix-pyllow = {
 
 Either `nix develop` or `direnv allow`.
 
-You’ll see a MOTD like:
-
-```shell
-🚀 Welcome to nix-pyllow
-
-🐍 Supported Python tooling (via nix-ld)
-  uv         - Python package installer ✔ (available)
-  pixi       - Environment manager      ✔ (available)
-
-🛠️  FHS fallback
-  fhs - Enter an FHS-compatible shell with all packages available
-```
-
 ---
 
 ## ⚙️ Options
 
 | Option                          | Type                              | Default                  | Description                                                   |
 | ------------------------------- | --------------------------------- | ------------------------ | ------------------------------------------------------------- |
-| `enable`                        | `bool`                            | `false`                  | Enable unpyatched integration                                 |
-| `name`                          | `string`                          | `"unpyatched"`           | Name of the environment (shown in MOTD and shell prompt)                       |
+| `shells`                        | `submodule` | None | Supports generating devShells through a simple interface (`packages` list and `env` attribute set) |
 | `backend`                       | `"fhs" \| "nix-ld"`               | `"fhs"`                  | Runtime backend (defaults to `"nix-ld"` if available)         |
 | `manylinux`                     | `null \| "1" \| "2010" \| "2014"` | `"1"` (Linux)            | Manylinux baseline to include in the environment              |
 | `enableHardlinkedCacheWrappers` | `bool`                            | `true`                   | Wrap uv/pixi so they choose a cache dir on the same filesystem as the venv - for hardlinking |
