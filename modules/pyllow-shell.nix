@@ -16,7 +16,15 @@ localFlake: {
     in {
       options.pyllow = {
         wrapMkShell = lib.mkOption {
-          type = lib.types.function;
+          type = lib.types.any.function;
+          readOnly = true;
+        };
+        wrapDevenv = lib.mkOption {
+          type = builtins.function;
+          readOnly = true;
+        };
+        wrapDevshell = lib.mkOption {
+          type = lib.types.anything;
           readOnly = true;
         };
         backend = lib.mkOption {
@@ -140,7 +148,6 @@ localFlake: {
                   wrapped = import ../lib/utils/wrapTools.nix config.packages {
                     inherit pkgs lib;
                     inherit (cfg) toolsToWrap manylinux backend;
-                    shellHook = lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "export ${name}=${value}") config.env);
                   };
                   inherit (wrapped) wrappedTools fhsEnv packagesWithoutTools libraries;
                 in {
@@ -194,6 +201,16 @@ localFlake: {
         pyllow = {
           wrapMkShell = shell:
             import ../lib/wrapShell.nix shell {
+              inherit pkgs lib;
+              inherit (cfg) backend manylinux toolsToWrap;
+            };
+          wrapDevenv = shell:
+            import ../lib/wrapDevenv.nix shell {
+              inherit pkgs lib;
+              inherit (cfg) backend manylinux toolsToWrap;
+            };
+          wrapDevshell = shell:
+            import ../lib/wrapDevshell.nix shell {
               inherit pkgs lib;
               inherit (cfg) backend manylinux toolsToWrap;
             };

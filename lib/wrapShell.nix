@@ -10,12 +10,17 @@ shell: {
     inherit pkgs lib;
     toolsToWrap = toolsToWrap;
     inherit backend;
-    shellHook = shell.shellHook;
   };
   inherit (wrapped) wrappedTools fhsEnv packagesWithoutTools libraries;
 in
   shell.overrideAttrs (oldAttrs: {
-    nativeBuildInputs = lib.unique (packagesWithoutTools ++ wrappedTools ++ [fhsEnv]);
+    nativeBuildInputs = lib.unique (packagesWithoutTools
+      ++ wrappedTools
+      ++ (
+        if backend == "fhs"
+        then [fhsEnv]
+        else []
+      ));
     shellHook =
       oldAttrs.shellHook
       ++ (

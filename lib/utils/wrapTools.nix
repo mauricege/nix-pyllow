@@ -8,7 +8,6 @@ packages: {
   libraries ? import ./libraries.nix {inherit pkgs manylinux;},
   pkgs,
   lib,
-  shellHook ? "",
   ...
 }: let
   pnameOf = pkg:
@@ -34,7 +33,6 @@ packages: {
       name = pname;
       targetPkgs = pkgs: matchedTools ++ packagesWithoutTools ++ libraries;
       runScript = pname;
-      profile = shellHook;
     };
   in
     pkgs.symlinkJoin {
@@ -70,7 +68,6 @@ packages: {
     name = "fhs";
     targetPkgs = pkgs:
       matchedTools ++ packagesWithoutTools ++ libraries;
-    profile = shellHook;
   };
 in {
   inherit wrappedTools packagesWithoutTools fhsEnv libraries;
